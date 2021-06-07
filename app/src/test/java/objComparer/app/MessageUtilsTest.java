@@ -19,24 +19,32 @@ import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
 public class MessageUtilsTest {
     @Test
     public void testGetMessage() throws JsonProcessingException {
-        Object o = new Object();
-        A a = new A("a", "b", o);
-        B b = new B("a", "b", o, 1);
-        C c = new C("a", "b", o);
+        A aaa = new A("1", "2", null);
+        A a = new A("a", "b", aaa);
+        B b = new B("a", "b", aaa, 1);
+        C c = new C("a", "b", aaa);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        var jsonTreeA = objectMapper.valueToTree(a);
-        var jsonTreeB = objectMapper.valueToTree(b);
-        var jsonTreeC = objectMapper.valueToTree(c);
+        assertThatJson(c)
+                .isEqualTo(a);
 
-        assertThatJson(jsonTreeC)
-                .isEqualTo(jsonTreeA);
-
-        assertThatJson(jsonTreeB)
+        assertThatJson(b)
                 .when(IGNORING_EXTRA_FIELDS)
-                .isEqualTo(jsonTreeA);
+                .isEqualTo(a);
 
-        Assertions.assertEquals(a.hashCode(), c.hashCode());
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+//        var jsonTreeA = objectMapper.valueToTree(a);
+//        var jsonTreeB = objectMapper.valueToTree(b);
+//        var jsonTreeC = objectMapper.valueToTree(c);
+
+
+//        assertThatJson(jsonTreeC)
+//                .isEqualTo(jsonTreeA);
+//
+//        assertThatJson(jsonTreeB)
+//                .when(IGNORING_EXTRA_FIELDS)
+//                .isEqualTo(jsonTreeA);
+//
+//        Assertions.assertEquals(a.hashCode(), c.hashCode());
     }
 }
